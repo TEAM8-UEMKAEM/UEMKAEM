@@ -10,9 +10,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/produk', [ProductController::class, 'index'])->name('products.index');
 Route::get('/kategori', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+Route::get('/account', function () {return view('account');})->name('account');
 
 Route::get('/kategori/{id}/image', function ($id) {
     $category = DB::table('categories')->where('id', $id)->first();
+
+
 
     if (!$category || !$category->image) {
         abort(404);
