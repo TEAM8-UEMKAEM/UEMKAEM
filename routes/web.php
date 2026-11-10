@@ -5,10 +5,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/produk', [ProductController::class, 'index'])->name('products.index');
 Route::get('/kategori', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+       ->name('admin.dashboard');
 
 Route::get('/kategori/{id}/image', function ($id) {
     $category = DB::table('categories')->where('id', $id)->first();
