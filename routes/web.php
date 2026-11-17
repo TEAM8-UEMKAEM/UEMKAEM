@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -9,7 +10,14 @@ use Illuminate\Support\Facades\DB;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/produk', [ProductController::class, 'index'])->name('products.index');
 Route::get('/kategori', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+
+// Login / logout (tanpa registrasi publik)
+Route::get('/login', [LoginController::class, 'show'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'store'])->name('login.store')->middleware(['guest', 'throttle:5,1']);
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
+
+// Dashboard sekarang hanya untuk admin
+Route::get('/dashboard', function () {return view('dashboard');})->middleware('admin')->name('dashboard');
 Route::get('/account', function () {return view('account');})->name('account');
 
 Route::get('/kategori/{id}/image', function ($id) {

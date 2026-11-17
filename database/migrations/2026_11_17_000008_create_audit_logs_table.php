@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('audit_logs', function (Blueprint $table) {
+            $table->id();
+            // nullOnDelete + salinan nama: riwayat tetap utuh walau akun admin dihapus
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('user_name');
+            $table->string('auditable_type');
+            $table->unsignedBigInteger('auditable_id')->nullable();
+            $table->string('action', 30); // created, updated, activated, deactivated
+            $table->json('old_values')->nullable();
+            $table->json('new_values')->nullable();
+            $table->timestamp('created_at')->useCurrent(); // tanpa updated_at: append-only
+            $table->index(['auditable_type', 'auditable_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('audit_logs');
+    }
+};
