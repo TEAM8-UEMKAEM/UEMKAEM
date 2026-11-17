@@ -37,6 +37,7 @@ Route::get('/kategori/{id}/image', function ($id) {
 
 })->name('categories.image');
 
+require __DIR__.'/buyer.php';
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/orders/{order}/payment', [OrderPaymentController::class, 'show'])->name('buyer.orders.payment.show');
