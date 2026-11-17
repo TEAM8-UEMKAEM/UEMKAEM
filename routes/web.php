@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\MaterialController as AdminMaterialController;
+use App\Http\Controllers\Admin\RegionController as AdminRegionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -16,9 +20,27 @@ Route::get('/login', [LoginController::class, 'show'])->name('login')->middlewar
 Route::post('/login', [LoginController::class, 'store'])->name('login.store')->middleware(['guest', 'throttle:5,1']);
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
 
-// Dashboard sekarang hanya untuk admin
+// Dashboard hanya untuk admin
 Route::get('/dashboard', function () {return view('dashboard');})->middleware('admin')->name('dashboard');
 Route::get('/account', function () {return view('account');})->name('account');
+
+// ---------- Panel admin (data master + riwayat perubahan) ----------
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+    Route::get('/', fn () => redirect()->route('admin.categories.index'))->name('home');
+
+    $masters = [
+        'categories' => AdminCategoryController::class,
+        'materials'  => AdminMaterialController::class,
+        'regions'    => AdminRegionController::class,
+    ];
+
+    foreach ($masters as $name => $controller) {
+        Route::patch("{$name}/{id}/toggle", [$controller, 'toggle'])->name("{$name}.toggle");
+        Route::resource($name, $controller)->except(['destroy']); // tidak ada hapus permanen
+    }
+
+    Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+});
 
 Route::get('/kategori/{id}/image', function ($id) {
     $category = DB::table('categories')->where('id', $id)->first();

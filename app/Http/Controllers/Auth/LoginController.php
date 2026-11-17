@@ -26,7 +26,9 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        $fallback = Auth::user()->is_admin ? route('admin.categories.index') : route('home');
+
+        return redirect()->intended($fallback);
     }
 
     public function destroy(Request $request)

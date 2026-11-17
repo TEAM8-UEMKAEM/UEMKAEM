@@ -8,8 +8,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Halaman Beranda: tampilkan 5 kategori unggulan beserta jumlah produknya
-        $categories = Category::withCount('products')->take(5)->get();
+        // Halaman Beranda: tampilkan 5 kategori aktif beserta jumlah produknya
+        $categories = Category::active()->withCount('products')->take(5)->get();
 
         return view('home', compact('categories'));
     }
