@@ -31,3 +31,5 @@ Route::get('/kategori/{id}/image', function ($id) {
         ->header('Cache-Control', 'public, max-age=86400');
 
 })->name('categories.image');
+
+require __DIR__.'/buyer.php';
