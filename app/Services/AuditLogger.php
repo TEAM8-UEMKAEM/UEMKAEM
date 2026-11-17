@@ -41,11 +41,13 @@ class AuditLogger
             $new['name'] = $model->name;
         }
 
+        $key = $model->getKey();
+
         AuditLog::create([
             'user_id' => $user?->id,
             'user_name' => $user?->name ?? 'system',
             'auditable_type' => class_basename($model),
-            'auditable_id' => $model->getKey(),
+            'auditable_id' => is_numeric($key) ? (int) $key : null, // Setting memakai kunci teks
             'action' => $action,
             'old_values' => $old,
             'new_values' => $new,

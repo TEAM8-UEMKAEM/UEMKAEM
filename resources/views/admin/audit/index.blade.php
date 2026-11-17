@@ -3,12 +3,17 @@
 
 @section('content')
     @php
-        $typeLabels = ['Category' => 'Kategori', 'Material' => 'Material', 'Region' => 'Wilayah', 'PriceRule' => 'Aturan Harga'];
+        $typeLabels = ['Category' => 'Kategori', 'Material' => 'Material', 'Region' => 'Wilayah', 'PriceRule' => 'Aturan Harga', 'Setting' => 'Pengaturan'];
         $actionLabels = ['created' => 'Dibuat', 'updated' => 'Diubah', 'activated' => 'Diaktifkan', 'deactivated' => 'Dinonaktifkan'];
         $fieldLabels = ['name' => 'Nama', 'slug' => 'Slug', 'is_active' => 'Status', 'tagline' => 'Tagline', 'description' => 'Deskripsi',
                         'badge' => 'Lencana', 'group' => 'Grup', 'regions' => 'Sentra', 'tags' => 'Tag', 'artisans_count' => 'Jumlah artisan',
-                        'unit' => 'Satuan', 'province' => 'Provinsi', 'min_price' => 'Harga minimum', 'max_price' => 'Harga maksimum'];
-        $fmt = fn ($k, $v) => $k === 'is_active' ? ($v ? 'Aktif' : 'Nonaktif') : (($v === null || $v === '') ? '—' : (is_array($v) ? json_encode($v) : $v));
+                        'unit' => 'Satuan', 'category_id' => 'ID kategori', 'material_id' => 'ID material', 'labor_hourly_rate' => 'Tarif upah per jam', 'province' => 'Provinsi', 'min_price' => 'Harga minimum', 'max_price' => 'Harga maksimum'];
+        $fmt = function ($k, $v) {
+            if ($k === 'is_active') { return $v ? 'Aktif' : 'Nonaktif'; }
+            if ($v === null || $v === '') { return '—'; }
+            if (in_array($k, ['min_price', 'max_price', 'labor_hourly_rate'], true)) { return 'Rp ' . number_format((int) $v, 0, ',', '.'); }
+            return is_array($v) ? json_encode($v) : $v;
+        };
     @endphp
 
     <section class="adm-head">
@@ -42,7 +47,7 @@
                 <tr>
                     <td style="white-space:nowrap;">{{ $log->created_at->format('d M Y H:i') }}</td>
                     <td>{{ $log->user_name }}</td>
-                    <td>{{ $typeLabels[$log->auditable_type] ?? $log->auditable_type }} #{{ $log->auditable_id }}</td>
+                    <td>{{ $typeLabels[$log->auditable_type] ?? $log->auditable_type }}@if ($log->auditable_id) #{{ $log->auditable_id }}@endif</td>
                     <td>{{ $actionLabels[$log->action] ?? $log->action }}</td>
                     <td class="adm-change">
                         @foreach (($log->new_values ?? []) as $k => $new)

@@ -29,4 +29,10 @@ class PriceRule extends Model
     {
         return $query->where('is_active', true);
     }
+
+    // Nama yang mudah dibaca, dipakai di konfirmasi dan riwayat perubahan
+    public function getNameAttribute(): string
+    {
+        return ($this->category?->name ?? '?') . ' × ' . ($this->material?->name ?? '?');
+    }
 }

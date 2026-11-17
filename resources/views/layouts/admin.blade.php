@@ -15,6 +15,8 @@
         ['Kategori Kriya', 'admin.categories.index', 'admin.categories.*'],
         ['Material', 'admin.materials.index', 'admin.materials.*'],
         ['Wilayah', 'admin.regions.index', 'admin.regions.*'],
+        ['Aturan Harga', 'admin.price-rules.index', 'admin.price-rules.*'],
+        ['Tarif Upah', 'admin.settings.edit', 'admin.settings.*'],
         ['Riwayat Perubahan', 'admin.audit-logs.index', 'admin.audit-logs.*'],
         ['Kembali ke Etalase', 'home', 'none'],
     ];
