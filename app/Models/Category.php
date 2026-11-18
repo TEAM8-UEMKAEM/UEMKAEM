@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Database\Factories\CategoryFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
@@ -10,6 +12,21 @@ class Category extends Model
     protected $fillable = ['name','slug','tagline','description','image','badge','group','regions','tags','artisans_count','is_active'];
 
     protected $casts = ['is_active' => 'boolean'];
+    /** @use HasFactory<CategoryFactory> */
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'tagline',
+        'description',
+        'image',
+        'badge',
+        'group',
+        'regions',
+        'tags',
+        'artisans_count',
+    ];
 
     public function products()
     {
