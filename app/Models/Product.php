@@ -13,6 +13,8 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'category_id', 'name', 'slug', 'artisan_name', 'origin',
+        'price', 'fair_trade_percent', 'stock', 'region_id', 'material_id',
         'category_id',
         'region_id',
         'artisan_id',
@@ -50,6 +52,9 @@ class Product extends Model
         return $this->belongsTo(Region::class);
     }
 
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
     public function artisan()
     {
         return $this->belongsTo(Artisan::class);

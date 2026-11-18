@@ -34,7 +34,9 @@ class ProductController extends Controller
         };
 
         $products = $query->paginate(12)->withQueryString();
-        $categories = Category::all();
+
+        // Pilihan filter hanya kategori aktif. Produk dari kategori nonaktif tetap tampil di katalog.
+        $categories = Category::active()->get();
 
         return view('products.index', compact('products', 'categories'));
     }
