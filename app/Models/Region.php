@@ -9,18 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    protected $fillable = ['name', 'slug', 'province', 'is_active'];
-
-    protected $casts = ['is_active' => 'boolean'];
     /** @use HasFactory<RegionFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'slug',
-        'province',
-        'description',
-    ];
+    protected $fillable = ['name', 'slug', 'province', 'description', 'is_active'];
+
+    protected $casts = ['is_active' => 'boolean'];
 
     public function products()
     {
@@ -30,6 +24,8 @@ class Region extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
     public function artisans()
     {
         return $this->hasMany(Artisan::class);

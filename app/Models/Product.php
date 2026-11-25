@@ -55,9 +55,16 @@ class Product extends Model
     public function material()
     {
         return $this->belongsTo(Material::class);
+    }
+
     public function artisan()
     {
         return $this->belongsTo(Artisan::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('id');
     }
 
     public function fairPrice()
