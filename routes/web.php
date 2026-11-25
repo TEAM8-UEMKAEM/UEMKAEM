@@ -56,6 +56,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('settings', [AdminSettingController::class, 'update'])->name('settings.update');
 
     Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+});
+
 Route::get('/test-login', function () {
     auth()->loginUsingId(1);
     return redirect('/orders/1/payment');
@@ -80,6 +82,7 @@ Route::get('/kategori/{id}/image', function ($id) {
 })->name('categories.image');
 
 require __DIR__.'/buyer.php';
+require __DIR__.'/artisan.php';
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/orders/{order}/payment', [OrderPaymentController::class, 'show'])->name('buyer.orders.payment.show');
